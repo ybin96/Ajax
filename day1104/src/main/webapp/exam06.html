@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$(document).on("click",".book", function(){
+			var bookid = $(this).attr("bookid");
+			$.ajax({
+				url:"customer/List",
+				data:{bookid:bookid},
+				success:function(arr){
+					$("#listCustomer").empty();
+					$.each(arr, function(){
+						var tr = $("<tr></tr>");
+						var td1 = $("<td></td>").html(this.custid);
+						var td2 = $("<td></td>").html(this.name);
+						var td3 = $("<td></td>").html(this.address);
+						var td4 = $("<td></td>").html(this.phone);
+						var td5 = $("<td></td>").html(this.orderid);
+						var td6 = $("<td></td>").html(this.saleprice);
+						var td7 = $("<td></td>").html(this.orderdate);
+						$(tr).append(td1,td2,td3,td4,td5,td6,td7);
+						$("#listCustomer").append(tr);
+					});
+				}
+			});
+		});
+		
+		
+		
+		$("#list_publisher").change(function(){
+			var publisher = $(this).val();
+			var data = {publisher:publisher};
+			$.ajax({
+				url:"book/List",
+				data:data,
+				success:function(arr){
+					$("#listBook").empty();
+					$.each(arr, function(){
+						var tr = $("<tr></tr>").attr("bookid",this.bookid).addClass("book");
+						var td1 = $("<td></td>").html(this.bookid);
+						var td2 = $("<td></td>").html(this.bookname);
+						var td3 = $("<td></td>").html(this.publisher);
+						var td4 = $("<td></td>").html(this.price);
+						$(tr).append(td1,td2,td3,td4);
+						$("#listBook").append(tr);
+					});
+				}
+			});
+		});
+		
+		
+		
+		$.ajax({
+			url:"publisher/List",
+			success:function(arr){
+				$.each(arr, function(){
+					var option= $("<option></option>").html(this);
+					$("#list_publisher").append(option);
+				});
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<select id="list_publisher"></select>
+	<hr>
+	<table border="1" width="80%">
+		<thead>
+			<tr>
+				<th>도서번호</th>
+				<th>도서명</th>
+				<th>출판사</th>
+				<th>가격</th>
+			</tr>
+		</thead>
+		<tbody id="listBook"></tbody>
+	</table>
+	<hr>
+	
+	<table border="1" width="80%"> 
+		<thead>
+			<tr>
+				<th>고객번호</th>
+				<th>고객명</th>
+				<th>주소</th>
+				<th>전화</th>
+				<th>주문번호</th>
+				<th>주문가격</th>
+				<th>주문일</th>
+			</tr>
+		</thead>
+		<tbody id="listCustomer"></tbody>
+	</table>
+	
+	
+	
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	<br>
+	
+	<table border="1" width="80%">
+		<tr><td>이름</td>	<td>국어</td>	<td>영어</td>	<td>수학</td>	</tr>
+		<tr><td>이순신</td>	<td>100</td>	<td>60</td>	<td>70</td>	</tr>
+		<tr><td>유관순</td>	<td>80</td>	<td>80</td>	<td>100</td>	</tr>
+		<tr><td>김유신</td>	<td>90</td>	<td>100</td><td>90</td>	</tr>
+	</table>
+	<hr>
+		
+</body>
+</html>
+

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#btnOK").click(function(){
+			$.ajax("Home/MyFirstStringAction",{success:function(data){
+				$("#msg").append(data);
+			}});	
+		});
+	});
+</script>
+</head>
+<body>
+	<table border="1" width="60%">
+		<tr><th>이름</th><th>국어</th><th>영어</th><th>수학</th></tr>
+		<tr><td>이순신</td><td>100</td><td>80</td><td>60</td></tr>
+		<tr><td>유관순</td><td>80</td><td>80</td><td>50</td></tr>
+		<tr><td>홍길동</td><td>90</td><td>90</td><td>80</td></tr>	
+	</table>
+	<hr>
+	
+	msg : <span id="msg"></span>
+	<button id="btnOK">메세지 받아오기</button>
+</body>
+</html>

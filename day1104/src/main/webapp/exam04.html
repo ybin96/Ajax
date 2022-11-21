@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	#emp_detail{
+		display:none;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.ajax({
+			url:"dept/List",
+			success:function(arr){
+				var option = $("<option></option>").html("부서를 선택하세요").attr("value",0);
+				$("#dept_list").append(option);
+				$.each(arr,function(){
+					var option = $("<option></option>").html(this.dname).attr("value",this.dno);
+					$("#dept_list").append(option);
+				});
+			}
+		});
+		
+		$("#dept_list").change(function(){
+			var dno = $(this).val();
+			$.ajax({
+				url:"emp/List",
+				data:{dno:dno},
+				success:function(arr){
+					$("#emp_list").empty();
+					var option = $("<option></option>").html("사원을 선택하세요").attr("value",0);
+					$("#emp_list").append(option);
+					
+					$.each(arr,function(){
+						var option = $("<option></option>").html(this.ename).attr("value",this.eno);
+						$("#emp_list").append(option);
+					});
+				}
+			});
+		});
+		
+		$("#emp_list").change(function(){
+			$("#emp_detail").css("display","block");
+			var eno = $(this).val();	
+			$.ajax({
+				url:"Emp",
+				data:{eno:eno},
+				success:function(e){
+						$("#eno").html(e.eno);
+						$("#ename").html(e.ename);
+						$("#dno").html(e.dno);
+						$("#salary").html(e.salary);
+						$("#comm").html(e.comm);
+						$("#hiredate").html(e.hiredate);
+						$("#phone").html(e.phone);
+						$("#addr").html(e.addr);
+						$("#mgr").html(e.mgr);
+						$("#job").html(e.job);
+						$("#email").html(e.email);
+						$("#jumin").html(e.jumin);
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	<select id="dept_list"></select>
+	<select id="emp_list"></select>
+	<div id="emp_detail">
+		사원번호 : <span id="eno"></span><br>
+		사원이름 : <span id="ename"></span><br>
+		부서번호 : <span id="dno"></span><br>
+		급여 : <span id="salary"></span><br>
+		수당 : <span id="comm"></span><br>
+		입사일 : <span id="hiredate"></span><br>
+		전화번호 : <span id="phone"></span><br>
+		주소 : <span id="addr"></span><br>
+		관리자번호 : <span id="mgr"></span><br>
+		직책: <span id="job"></span><br>
+		이메일 : <span id="email"></span><br>
+		주민번호 : <span id="jumin"></span><br>
+	</div>
+	<hr>
+	<table border="1" width="80%">
+		<tr><td>이름</td>	<td>국어</td>	<td>영어</td>	<td>수학</td>	</tr>
+		<tr><td>이순신</td>	<td>100</td>	<td>60</td>	<td>70</td>	</tr>
+		<tr><td>유관순</td>	<td>80</td>	<td>80</td>	<td>100</td>	</tr>
+		<tr><td>김유신</td>	<td>90</td>	<td>100</td><td>90</td>	</tr>
+	</table>
+	<hr>
+	
+	
+</body>
+</html>
