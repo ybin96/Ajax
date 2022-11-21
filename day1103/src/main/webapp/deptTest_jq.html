@@ -1,0 +1,55 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">	
+$(function(){
+	$("#btnOK").click(function(){
+		$.ajax("listDept.jsp",{success:function(data){
+			var arr = eval("("+data+")");
+			$.each(arr, function(){
+				var tr = $("<tr></tr>");
+				var td1 = $("<td></td>").html( this.dno );
+				var td2 = $("<td></td>").html( this.dname );
+				var td3 = $("<td></td>").html( this.dloc );
+				$(tr).append(td1,td2,td3);
+				$("#list").append(tr);
+			});
+		}});
+	});
+});
+</script>
+</head>
+<body>
+<input type="text">
+<button id="btnOK">Ajax통신</button>
+<hr>
+<table border="1" width="80%">
+	<thead>
+		<tr>
+			<th>부서번호</th>
+			<th>부서명</th>
+			<th>부서위치</th>			
+		</tr>
+	</thead>
+	<tbody id="list"></tbody>
+</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

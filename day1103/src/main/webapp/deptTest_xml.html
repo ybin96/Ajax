@@ -1,0 +1,83 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	window.onload = function(){
+		document.getElementById("btnOK").onclick = function(){
+			var list = document.getElementById("list");
+			var request = new XMLHttpRequest();
+			request.onreadystatechange = function(event){
+				if(request.readyState == 4){	
+					if(request.status == 200){
+						var xml = request.responseXML;
+						var dept = xml.getElementsByTagName("dept");
+						//console.log(dept[0].childNodes.length);
+						//console.log(dept[0].childNodes[0].childNodes[0].nodeValue);
+						
+						for(i=0; i<dept.length; i++){
+							var d = dept[i];
+							var tr = document.createElement("tr");
+							var td1 = document.createElement("td");
+							var td2 = document.createElement("td");
+							var td3 = document.createElement("td");
+							var txt1 = document.createTextNode(d.childNodes[0].childNodes[0].nodeValue);
+							var txt2 = document.createTextNode(d.childNodes[1].childNodes[0].nodeValue);
+							var txt3 = document.createTextNode(d.childNodes[2].childNodes[0].nodeValue);
+							
+							td1.appendChild(txt1);
+							td2.appendChild(txt2);
+							td3.appendChild(txt3);
+							
+							tr.appendChild(td1);
+							tr.appendChild(td2);
+							tr.appendChild(td3);
+							
+							list.appendChild(tr);
+							
+						}
+					}else{
+						alert("서버에 문제가 있습니다.");
+					}
+				}
+			}			
+			
+			request.open("get","listDept_XML.jsp",true);
+			request.send();			
+			
+		}
+	}
+</script>
+</head>
+<body>
+<input type="text">
+<button id="btnOK">Ajax통신</button>
+<hr>
+<table border="1" width="80%">
+	<thead>
+		<tr>
+			<th>부서번호</th>
+			<th>부서명</th>
+			<th>부서위치</th>			
+		</tr>
+	</thead>
+	<tbody id="list"></tbody>
+</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

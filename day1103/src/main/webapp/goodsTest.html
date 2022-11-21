@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#btnRead").click(function(){
+			$.ajax("listGoods.jsp",{success:function(arr){
+				$.each(arr, function(){
+					var tr = $("<tr></tr>");
+					var td1 = $("<td></td>").html(this.no);
+					var td2 = $("<td></td>").html(this.name);
+					var td3 = $("<td></td>").html(this.qty);
+					var td4 = $("<td></td>").html(this.price);
+					var td5 = $("<td></td>");
+					var img = $("<img/>").attr({
+						src:"./images/"+this.fname,
+						width:"50",
+						height:"50"
+					});
+					$(td5).append(img);
+					$(tr).append(td1,td2,td3,td4,td5);
+					$("#list").append(tr);
+				});
+			}});
+		});
+	});
+</script>
+</head>
+
+<body>
+	<button id="btnRead">상품목록 읽어오기</button>
+	<hr>
+	<table border="1" width="80%">
+		<thead>
+			<tr>
+				<th>상품번호</th>
+				<th>상품이름</th>
+				<th>수량</th>
+				<th>가격</th>
+				<th>파일명</th>
+			</tr>
+		</thead>
+		<tbody id="list"></tbody>
+	</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
