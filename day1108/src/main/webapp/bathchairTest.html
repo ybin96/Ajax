@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.page{
+		margin-right: 5px;
+	}
+	
+	.high_light{
+		background: yellow;
+	}
+	
+	.active{
+		background: pink;
+	}
+	
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7a9b1feea419cbaa79877236f681fc1d"></script>
+<script type="text/javascript">
+	$(function(){
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
+
+		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+		
+		
+		
+		
+		var list = [];
+		var pageSIZE = 10;		//한 화면에 보여줄 레코드의 수
+		var totalRecord = 0;	//전체 레코드의 수
+		var totalPage = 1;		//전제 페이지수
+		$.get("전국전동휠체어급속충전기표준데이터.xml",function(data){
+			arr = $(data).find("record");			
+			$.each(arr, function(){
+				var 주소 = $(this).find("소재지도로명주소").text();
+				if(주소.match("서울")){
+					list.push(this);					
+				}
+			});
+			
+			totalRecord = list.length;
+			totalPage = Math.ceil(totalRecord/pageSIZE);
+			for(i=1; i<=totalPage;i++){
+				var span =$("<span></span>").html(i).addClass("page");
+				$("#pageStr").append(span);
+			}
+			
+			pageData(1);
+		});
+		
+		
+		$(document).on("click",".page",function(){
+			var pageNUM = eval($(this).html());
+			pageData(pageNUM);			
+		});
+		
+		
+		var pageData = function(pageNUM){
+			var start = (pageNUM-1)*pageSIZE;
+			var end = start + pageSIZE - 1;
+			if(end > totalRecord){
+				end = totalRecord-1;
+			}
+			
+			$("#list").empty();
+			for(i=start; i<=end; i++){
+				var tr = $("<tr></tr>").addClass("row").attr({lat:$(list[i]).find("위도").text(),lng:$(list[i]).find("경도").text()}); 
+				$(tr).append( $("<td></td>").html( $(list[i]).find("시설명").text()));					
+				$(tr).append( $("<td></td>").html( $(list[i]).find("위도").text()));					
+				$(tr).append( $("<td></td>").html( $(list[i]).find("경도").text()));					
+				$(tr).append( $("<td></td>").html( $(list[i]).find("평일운영시작시각").text()));					
+				$(tr).append( $("<td></td>").html( $(list[i]).find("평일운영종료시각").text()));					
+				$(tr).append( $("<td></td>").html( $(list[i]).find("관리기관전화번호").text()));					
+				$("#list").append(tr);
+			}
+		}
+		
+		$(document).on("click",".row",function(){
+			var lat = $(this).attr("lat");
+			var lng = $(this).attr("lng");
+			// 이동할 위도 경도 위치를 생성합니다 
+		    var moveLatLon = new kakao.maps.LatLng(lat, lng);
+		    
+		    // 지도 중심을 부드럽게 이동시킵니다
+		    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+		    map.panTo(moveLatLon);   
+		    
+		 	// 마커를 생성합니다
+		    var marker = new kakao.maps.Marker({
+		        position: moveLatLon
+		    });
+
+		    // 마커가 지도 위에 표시되도록 설정합니다
+		    marker.setMap(map);
+		    
+		    
+		    $(".row").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		$(document).on("mouseover",".row",function(){
+			$(this).addClass("high_light");
+		});
+		
+		$(document).on("mouseleave",".row",function(){
+			$(this).removeClass("high_light");
+		});
+		
+		
+		
+	});
+</script>
+</head>
+<body>
+<!-- 시설명, 위도,경도,평일운영시작시각,평일운영종료시각,관리기관전화번호 -->
+
+	<table border="1" width="80%" id="list"></table>
+	<div id="pageStr"></div>
+	<hr>
+	
+	<div id="map" style="width:100%;height:350px;"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cefc0082e9394dd9d2599e7e7240032c"></script>
+<script type="text/javascript">
+	$(function(){
+		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
+	    mapOption = { 
+	        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+	        level: 3 // 지도의 확대 레벨
+	    };
+
+		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+		var map = new kakao.maps.Map(mapContainer, mapOption); 
+
+
+		$(document).on("click",".parking", function(){
+			var lat = $(this).attr("lat");
+			var lng = $(this).attr("lng");
+			var movePosition = new kakao.maps.LatLng(lat,lng);
+			map.panTo(movePosition);
+			
+			var marker = new kakao.maps.Marker({
+				position:movePosition
+			});
+			marker.setMap(map);
+		});
+		
+		
+		
+		
+		$.getJSON("전국주차장정보표준데이터.json",function(data){
+			//console.log(data);
+			//소재지가 서울인 주자장의 다음의 정보를 표 형태로 출력합니다.
+			//주차장명,주차장구분,요금정보,운영요일,전화번호,위도,경도,소재지도로명주소
+			//완성하면 "1"
+			
+			var arr = data.records;
+			$.each(arr, function(){
+				var 주소 = this.소재지도로명주소;
+				var 요금 = this.요금정보
+				if(주소.match("서울") && 요금 == "무료"){
+					var tr = $("<tr></tr>").addClass("parking").attr({lat:this.위도,lng:this.경도});
+					$(tr).append(  $("<td></td>").html(this.주차장명) );
+					$(tr).append(  $("<td></td>").html(this.주차장구분) );
+					$(tr).append(  $("<td></td>").html(this.요금정보) );
+					$(tr).append(  $("<td></td>").html(this.운영요일) );
+					$(tr).append(  $("<td></td>").html(this.전화번호) );
+					$(tr).append(  $("<td></td>").html(this.위도) );
+					$(tr).append(  $("<td></td>").html(this.경도) );
+					$(tr).append(  $("<td></td>").html(this.소재지도로명주소) );
+					$("#list").append(tr);
+				}
+				
+			});
+			
+			var startPosition = new kakao.maps.LatLng(arr[0].위도,arr[0].경도);
+			map.panTo(startPosition);
+			
+			var marker = new kakao.maps.Marker({
+				position:startPosition
+			});
+			marker.setMap(map);
+		});
+	});
+</script>
+</head>
+<body>
+	<table border="1" width="80%" id="list"></table>
+	<hr>
+	<div id="map" style="width:100%;height:350px;"></div>
+</body>
+</html>
+
+
+
+
+
+

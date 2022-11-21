@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var data = {
+				name:"hong",
+				age:20,
+				addr:"seoul"
+		};
+	var str = $.param(data);
+	$("#result").html(str);
+	});
+</script>
+</head>
+<body>
+<h1 id="result"></h1>
+</body>
+</html>

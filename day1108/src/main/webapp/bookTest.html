@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.high_light{
+		background: pink;
+	}
+	.active{
+		background: khaki;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$(document).on("click",".book",function(){
+			$("#bookid").val($(this).attr("bookid"));
+			$("#bookname").val($(this).attr("bookname"));
+			$("#publisher").val($(this).attr("publisher"));
+			$("#price").val($(this).attr("price"));
+			
+			$(".book").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		$(document).on("mouseover",".book",function(){
+			$(this).addClass("high_light");
+		});
+		$(document).on("mouseleave",".book",function(){
+			$(this).removeClass("high_light");
+		});
+		
+		
+		var listBook = function(){
+			$.ajax({
+				url:"ListBook",
+				success:function(arr){
+					$("#list").empty();
+					$.each(arr,function(){
+						var li = $("<li></li>").html(this.bookname).addClass("book").attr({
+							bookid:this.bookid,bookname:this.bookname,publisher:this.publisher,price:this.price});
+						$("#list").append(li);
+					});
+				}
+			});
+		}
+		
+		
+		$("#insertBook").submit(function(e){
+			var data = $(this).serializeArray();
+			$.ajax({
+				url:"InsertBook",
+				data:data,
+				success:function(r){
+					alert("등록완료");
+					listBook();	
+				}
+			})
+			e.preventDefault();
+		});
+		listBook();
+		
+		$("#btnNew").click(function(){
+			$.ajax({
+				url:"NextBookid",
+				success:function(bookid){
+					$("#bookid").val(bookid);
+				}
+			});
+		});
+		
+		$("#btnUpdate").click(function(){
+			var data = $("#insertBook").serializeArray(); 
+			$.ajax({
+				url:"UpdateBook",
+				data:data,
+				success:function(r){
+					alert("수정완료");
+					listBook();
+				}
+			});
+		});
+	});
+</script>
+</head>
+<body>
+	<ul id="list">
+	</ul>
+	<hr>
+	<form id="insertBook">
+		도서번호 : <input type="text" name="bookid" id="bookid" readonly="readonly"><br>
+		도서이름 : <input type="text" name="bookname" id="bookname"><br>
+		출판사명 : <input type="text" name="publisher" id="publisher"><br>
+		도서가격 : <input type="text" name="price" id="price"><br>
+		
+		<input type="button" value="도서번호 발행" id="btnNew">
+		<input type="submit" value="등록">
+		<input type="button" value="수정" id="btnUpdate">
+	</form>
+</body>
+</html>
