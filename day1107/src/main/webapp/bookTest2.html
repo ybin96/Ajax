@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#title").load("GetTitle");		
+		$("#btnDelete").click(function(){			
+			if(confirm("정말로 삭제하시겠습니까?")){			
+				var data = {
+						bookid:$("#bookid").val(),
+						oper:"delete"};
+				$.get("EditBook",data,function(re){
+					listBook();
+				});
+			}
+		});
+				
+		
+		$("#btnUpdate").click(function(){
+			var bookid = $("#bookid").val();
+			var bookname = $("#bookname").val();
+			var publisher = $("#publisher").val();
+			var price = $("#price").val();
+			
+			var data = {bookid:bookid,
+						bookname:bookname,
+						publisher:publisher,
+						price:price,
+						oper:"update"};
+			
+			
+			$.post("EditBook",
+					data,
+					function(re){
+						listBook();
+					});
+			});
+		
+		
+		
+		$(document).on("click",".book",function(){
+			var td = $(this).find("td");
+			$("#bookid").val( $(td[0]).html() );
+			$("#bookname").val( $(td[1]).html() );
+			$("#publisher").val( $(td[2]).html() );
+			$("#price").val( $(td[3]).html() );
+		});
+		
+		
+		
+		$("#btnAdd").click(function(){
+			var bookid = $("#bookid").val();
+			var bookname = $("#bookname").val();
+			var publisher = $("#publisher").val();
+			var price = $("#price").val();
+			var data = {
+						bookid:bookid,
+						bookname:bookname,
+						publisher:publisher,
+						price:price,
+						oper:"add"
+					};
+			
+			$.ajax({
+				url:"EditBook",
+				data:data,
+				success:function(re){
+					listBook();
+				}
+			});
+			
+		});
+		
+		
+		
+		var listBook = function(){
+			$("#list").empty();
+			$.getJSON("ListBook",function(arr){
+				$.each(arr ,function(){
+					var tr = $("<tr></tr>").addClass("book");
+					var td1 = $("<td></td>").html(this.bookid);
+					var td2 = $("<td></td>").html(this.bookname);
+					var td3 = $("<td></td>").html(this.publisher);
+					var td4 = $("<td></td>").html(this.price);
+					
+					$(tr).append(td1,td2,td3,td4);
+					$("#list").append(tr);
+				});
+			});
+		}
+		
+		listBook();
+	});
+</script>
+</head>
+<body>
+	<h2 id="title"></h2>
+
+	도서번호 : <input type="number" id="bookid"><br>	
+	도서이름 : <input type="text" id="bookname"><br>	
+	출판사명 : <input type="text" id="publisher"><br>	
+	도서가격 : <input type="number" id="price"><br>
+	<hr>
+	<button  id="btnAdd">등록</button>	
+	<button  id="btnUpdate">수정</button>	
+	<button  id="btnDelete">삭제</button>	
+
+	<table border="1" width="80%">
+		<thead>
+			<tr>
+				<th>도서번호</th>
+				<th>도서명</th>
+				<th>출판사</th>
+				<th>가격</th>
+			</tr>
+		</thead>
+		<tbody id="list"></tbody>
+	</table>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

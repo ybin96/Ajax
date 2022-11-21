@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$.getJSON("전국주차장정보표준데이터.json",function(data){
+			//console.log(data);
+			//소재지가 서울인 주자장의 다음의 정보를 표 형태로 출력합니다.
+			//주차장명,주차장구분,요금정보,운영요일,전화번호,위도,경도,소재지도로명주소
+			//완성하면 "1"
+			
+			var arr = data.records;
+			$.each(arr, function(){
+				var 주소 = this.소재지도로명주소;
+				var 요금 = this.요금정보
+				if(주소.match("서울") && 요금 == "무료"){
+					var tr = $("<tr></tr>");
+					$(tr).append(  $("<td></td>").html(this.주차장명) );
+					$(tr).append(  $("<td></td>").html(this.주차장구분) );
+					$(tr).append(  $("<td></td>").html(this.요금정보) );
+					$(tr).append(  $("<td></td>").html(this.운영요일) );
+					$(tr).append(  $("<td></td>").html(this.전화번호) );
+					$(tr).append(  $("<td></td>").html(this.위도) );
+					$(tr).append(  $("<td></td>").html(this.경도) );
+					$(tr).append(  $("<td></td>").html(this.소재지도로명주소) );
+					$("#list").append(tr);
+				}
+				
+			});
+			
+			
+		});
+	});
+</script>
+</head>
+<body>
+	<table border="1" width="80%" id="list"></table>
+</body>
+</html>
+
+
+
+
+
+

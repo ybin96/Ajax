@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+	.high_light{
+		background: yellow;
+	}
+	
+	.active{
+		background: pink;
+	}
+</style>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		$("#btnAdd").click(function(){
+			var dept = {
+				dno:$("#dno").val(),
+				dname:$("#dname").val(),
+				dloc:$("#dloc").val(),
+				oper:"add"
+			};
+			
+			$.post("EditDept",dept,function(r){
+				listDept();
+			});
+			
+		});
+		
+		
+		
+		$("#btnUpdate").click(function(){
+			var data = {
+				dno:$("#dno").val(),
+				dname:$("#dname").val(),
+				dloc:$("#dloc").val(),
+				oper:"edit"
+			};
+			
+			$.post("EditDept",data,function(r){
+				listDept();
+			});
+			
+		});
+		
+		
+		$("#btnDelete").click(function(){
+			var data = {
+				dno:$("#dno").val(),
+				oper:"del"
+			};
+			
+			
+			if(confirm("정말로 삭제하시겠어요?")){			
+				$.post("EditDept",data,function(r){
+					if(r.result == "success"){
+						alert("해당부서를 삭제하였습니다.");
+					}else{
+						alert("삭제에 실패하였습니다.");
+					}
+					listDept();
+				});
+			}
+		});
+		
+		
+		$(document).on("click",".dept",function(){
+			var td =$(this).find("td");
+			$("#dno").val( $(td[0]).html() );
+			$("#dname").val( $(td[1]).html() );
+			$("#dloc").val( $(td[2]).html() );
+			
+			$(".dept").removeClass("active");
+			$(this).addClass("active");
+		});
+		
+		
+		$(document).on("mouseover",".dept", function(){
+			$(this).addClass("high_light");
+		});
+		
+		$(document).on("mouseleave",".dept", function(){
+			$(this).removeClass("high_light");
+		});
+		
+		
+		var listDept  = function(){
+			$("#list").empty();
+			$.getJSON("ListDept",function(arr){
+				$.each(arr, function(){
+					var tr = $("<tr></tr>").addClass("dept");
+					var td1 = $("<td></td>").html(this.dno);
+					var td2 = $("<td></td>").html(this.dname);
+					var td3 = $("<td></td>").html(this.dloc);
+					$(tr).append(td1,td2,td3);
+					$("#list").append(tr);
+				});
+			});
+		}
+		
+		listDept();
+	});
+</script>
+</head>
+<body>
+	부서번호 : <input type="number" id="dno"><br>
+	부서이름 : <input type="text" id="dname"><br>
+	부서위치 : <input type="text" id="dloc"><br>
+	<button id="btnAdd">등록</button>
+	<button id="btnUpdate">수정</button>
+	<button id="btnDelete">삭제</button>
+	<hr>
+
+	<table border="1" width="80%">
+		<thead>
+			<tr>
+				<th>부서번호</th>
+				<th>부서명</th>
+				<th>부서위치</th>
+			</tr>
+		</thead>
+		<tbody id="list">		
+		</tbody>
+	</table>
+</body>
+</html>
