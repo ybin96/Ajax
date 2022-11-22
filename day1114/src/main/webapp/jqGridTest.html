@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="jquery-ui-1.13.1.custom/jquery-ui.min.css">
+<link rel="stylesheet" href="jquery.jqGrid-4.4.3/css/ui.jqgrid.css">
+<style type="text/css">
+	
+</style>
+
+<script type="text/javascript" src="jquery.jqGrid-4.4.3/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript" src="jquery.jqGrid-4.4.3/js/i18n/grid.locale-en.js"></script>
+<script type="text/javascript" src="jquery.jqGrid-4.4.3/js/jquery.jqGrid.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var myDlg = {
+				onclickSubmit:function(params){
+					var selectedRow = $("#list").getGridParam("selrow");
+					var rowData = $("#list").getRowData(selectedRow);
+					return {bookid:rowData.bookid};
+				}
+		}
+		
+		$("#list").jqGrid({
+			url:"GetBooks",
+			editurl:"EditBooks",
+			pager:"#pager",
+			caption:"도서목록",
+			height:"100%",
+			rowNum:5,
+			rowList:[5,10,15,20],
+			colNames:['bookid','bookname','publisher','price'],
+			colModel:[
+				{name:'bookid',index:'bookid',width:100,editable:true},
+				{name:'bookname',index:'bookname',width:200,editable:true},
+				{name:'publisher',index:'publisher',width:200,editable:true},
+				{name:'price',index:'price',width:100,editable:true},
+			]
+		}).navGrid("#pager",{
+			search:true,
+			edit:true,
+			add:true,
+			del:true
+		},{},{},myDlg);
+	});
+</script>
+</head>
+<body>
+	<table id="list"></table>
+	<div id="pager"></div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="jquery-ui-1.13.1.custom/jquery-ui.min.css">
+<style type="text/css">
+	
+</style>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("h1").click(function(){
+			$("iframe").addClass("ui-helper-zfix");
+		});
+		
+		$(window).keydown(function(){
+			$("iframe").removeClass("ui-helper-zfix");
+		})
+	});
+</script>
+</head>
+<body>
+	<ul id="list" class="ui-helper-reset">
+		<li>
+			<div class="ui-widget-content ui-corner-all">
+				<h1>FULLSCREEN</h1>
+			</div>
+		</li>
+	</ul>
+	
+	<iframe width="650" height="510" src="http://www.youtube.com/embed/wMHLD9aPZ2Y"></iframe>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="jquery-ui-1.13.1.custom/jquery-ui.min.css">
+<style type="text/css">
+	.box{
+		padding: 5px;
+	}
+	
+	.box p{
+		margin: 0px; padding: 5px;
+	}
+</style>
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="jquery-ui-1.13.1.custom/jquery-ui.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		function reset(){
+			var resetClass = "ui-corner-all ui-widget-content box";
+			$("#output").attr("class",resetClass);
+		}
+		
+		reset();
+		
+		$("#menu").buttonset();
+		
+		$("#menu > input").change(function(){
+			reset();
+			$("#output").addClass("ui-state-"+$(this).val());
+		});
+		
+		$("button").click(function(){
+			reset();
+		});
+	});
+</script>
+</head>
+<body>
+
+	<div id="menu">
+		<input type="radio" name="theme" id="highlight" value="highlight"/>
+		<label for="highlight">highlight</label>
+		
+		<input type="radio" name="theme" id="error" value="error"/>
+		<label for="error">error</label>
+		
+		<input type="radio" name="theme" id="error_text" value="error_text"/>
+		<label for="error_text">error_text</label>
+		
+		<input type="radio" name="theme" id="disabled" value="disabled"/>
+		<label for="disabled">disabled</label>
+		
+		<button>RESET</button>
+	</div>
+
+	<div id="output">
+		<p>4대 과학기술원(KAIST·GIST·UNIST·DGIST) 예산 재원을 과학기술정보통신부에서 교육부로 이관하려는 기획재정부의 안이 무산됐다.
+
+13일 과학기술정보통신부는 “4대 과학기술원의 예산을 특별회계로 이관하지 않기로 기재부와 협의 완료했다”고 밝혔다.
+
+과학기술원에는 한국과학기술원(KAIST), 광주과학기술원(GIST), 대구경북과학기술원(DGIST), 울산과학기술원(UNIST) 등이 있다. 이들 과학기술원은 과학기술분야 고급 인재를 양성하고 우수 연구성과를 창출한다는 설립취지에 따라, 교육부가 아닌 과기정통부 소관으로 운영되고 있었다.
+
+하지만 기획재정부는 최근 ‘고등·평생교육 특별회계’(가칭) 신설을 추진하면서, 과학기술원의 예산을 특별회계로 이관한다는 방침을 밝혔다. 특별회계 신설은 인구구조 변화 등 환경변화에 맞춰 교육교부금 운용 정책을 개편하는 과정에서 추진되고 있다. 재정당국은 특별회계에 과학기술원이 포함되면 더 많은 재정 지원이 가능해진다는 취지였다.</p>
+	</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
