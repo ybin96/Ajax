@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="jquery.validate.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#my_form").validate({
+			rules:{
+				name:{required:true,minlength:2},
+				email:'required email',
+				homepage:{required:true,url:true}
+			},
+			messages:{
+				name:{required:'이름을 입력하세요',minlength:'{0}글자 이상 입력하세요'},
+				email:{required:'이메일을 입력하세요',email:'이메일 형식에 맞게 입력하세요'},
+				homepage:{required:'주소를 입력하세요',url:'url형식에 맞게 입력하세요'}
+			}
+		}); 
+	})
+</script>
+</head>
+<body>
+	<form action="" id="my_form">
+		<table>
+			<tr>
+				<td><label>이름</label></td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td><label>이메일</label></td>
+				<td><input type="text" name="email"></td>
+			</tr>
+			<tr>
+				<td><label>홈페이지</label></td>
+				<td><input type="text" name="homepage"></td>
+			</tr>
+		</table>
+		<input type="submit" value="send">
+	</form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="jquery.layout.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("body").layout({
+			applyDefaultStyles:true
+		})
+		
+		$("#container").layout({
+			applyDefaultStyles:true
+		})
+		
+		
+	})
+</script>
+</head>
+<body>
+	<div id="container" class="ui-layout-center">Center
+		<div class="ui-layout-center">center</div>
+		<div class="ui-layout-east">East</div>
+		<div class="ui-layout-west">West</div>
+		<div class="ui-layout-south">South</div>
+		<div class="ui-layout-north">North</div>
+	
+	</div>
+	<div class="ui-layout-east">East</div>
+	<div class="ui-layout-west">West</div>
+	<div class="ui-layout-south">South</div>
+	<div class="ui-layout-north">North</div>
+</body>
+</html>
