@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="sist.js"></script>
+<script type="text/javascript">
+	$(function(){
+		var today = new Date();
+		today.setDate( today.getDate()+2 );	
+		var arr = $(".date");
+		$.each(arr, function(){
+			today.setDate( today.getDate()+1 );
+			var month = today.getMonth() +1 ;
+			var date = today.getDate();		
+			
+			$(this).html(month+"/"+date);
+			
+		});
+		
+		var key = "dEAjcRng1q%2BZ8dnzPqxxWvPPado8097gcy9fpyiiGvXhxQVB6hAtzJjHN%2Fpk%2FzkFhI3EstFkhL9tHe08MzzIxg%3D%3D";
+		var regId = "";
+		var tmFc = getTmFc();	
+		console.log(tmFc);		
+		
+				
+		var arr = {
+					"11B00000":"서울,인천,경기도",
+					"11D10000":"강원도 영서",
+					"11D20000":"강원도 영동",
+					"11C20000":"대전,세종,충청남도",
+					"11C10000":"충청북도",
+					"11F20000":"광주,전라남도",
+					"11F10000":"전라북도",
+					"11H10000":"대구,경상북도",
+					"11H20000":"부산,울산,경상남도",
+					"11G00000":"제주도"
+		 };			
+		
+		 $.each(arr, function(key, value){
+			 var option = $("<option></option>").html(value).attr("value",key);
+			 $("#regId").append(option);
+		 });	
+		 
+		 
+		 $("#btnOK").click(function(){
+			 regId = $("#regId").val();
+			 var url = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst?dataType=JSON&serviceKey="+key+"&numOfRows=10&pageNo=1&regId="+regId+"&tmFc="+tmFc;
+			 $.ajax({
+				url:url,
+				success:function(data){
+					$("#list").empty();
+					var item = data.response.body.items.item[0];
+					var tr = $("<tr></tr>");
+					$.each(item, function(key, value){
+						if(key.match("wf") && key.length > 4){
+							var td = $("<td></td>");
+							var fname = value + ".png"
+							var img = $("<img/>").attr("src",fname);
+							$(td).append(img);
+							$(tr).append( td  )
+						}
+					});
+					$("#list").append(tr);
+				}
+			 });
+			 		
+		 });
+				
+	});
+</script>
+</head>
+<body>
+	<select id="regId">
+	</select>
+	<button id="btnOK">중기육상예보조회</button>
+	<hr>
+	<table border="1">
+		<thead>
+		<tr>
+			<td colspan="2" class="date">날짜1</td>			
+			<td colspan="2" class="date">날짜2</td>
+			<td colspan="2" class="date">날짜3</td>			
+			<td colspan="2" class="date">날짜4</td>			
+			<td colspan="2" class="date">날짜5</td>
+		</tr>
+		
+		<tr>
+			<td width="80">오전</td>
+			<td width="80">오후</td>
+			<td width="80">오전</td>
+			<td width="80">오후</td>
+			<td width="80">오전</td>
+			<td width="80">오후</td>
+			<td width="80">오전</td>
+			<td width="80">오후</td>
+			<td width="80">오전</td>
+			<td width="80">오후</td>
+		</tr>		
+		</thead>
+		<tbody id="list">
+		</tbody>
+	</table>
+</body>
+</html>
+
+
+
+
+
+

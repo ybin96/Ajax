@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript" src="sist.js"></script>
+<script type="text/javascript">
+$(function(){
+	var today = new Date();
+	today.setDate( today.getDate()+2 );	
+	var arr = $(".date");
+	$.each(arr, function(){
+		today.setDate( today.getDate()+1 );
+		var month = today.getMonth() +1 ;
+		var date = today.getDate();		
+		
+		$(this).html(month+"/"+date);
+		
+	});
+	
+	$.ajax({
+		url:"code.txt",
+		success:function(data){
+			var arr = data.split("\n");
+			$.each(arr, function(){
+				var row = this.split(",");
+				var option = $("<option></option>").html(row[1]).attr("value",row[0]);
+				$("#regId").append(option);
+			});
+		}
+	});
+	
+	
+	$("#btnOK").click(function(){
+		var key = "dEAjcRng1q%2BZ8dnzPqxxWvPPado8097gcy9fpyiiGvXhxQVB6hAtzJjHN%2Fpk%2FzkFhI3EstFkhL9tHe08MzzIxg%3D%3D";
+		var tmFc = getTmFc();
+		var regId = $("#regId").val();
+		
+		var url = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa?serviceKey="+key+"&numOfRows=10&pageNo=1&regId="+regId+"&tmFc="+tmFc;
+		
+		$.ajax({
+			url:url,
+			success:function(data){
+				$("#list").empty();
+				var i = 3;
+				var tr = $("<tr></tr>");
+				for(i = 3; i<= 10; i++){
+					var min = $(data).find("taMin"+i).text();
+					var max = $(data).find("taMax"+i).text();
+					$(tr).append( $("<td></td>").html(min));
+					$(tr).append( $("<td></td>").html(max));
+				}
+				$("#list").append(tr);
+			}
+		})
+		
+	});
+	
+});
+</script>
+</head>
+<body>
+	<select id="regId"></select>
+	<button id="btnOK">중기기온조회</button>
+	<hr>
+	<table border="1">
+		<thead>
+		<tr>
+			<td colspan="2" class="date">날짜1</td>			
+			<td colspan="2" class="date">날짜2</td>
+			<td colspan="2" class="date">날짜3</td>			
+			<td colspan="2" class="date">날짜4</td>			
+			<td colspan="2" class="date">날짜5</td>
+			<td colspan="2" class="date">날짜6</td>
+			<td colspan="2" class="date">날짜7</td>
+			<td colspan="2" class="date">날짜8</td>
+		</tr>
+		
+		<tr>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>
+			<td width="80">최저</td>
+			<td width="80">최고</td>						
+		</tr>		
+		</thead>
+		<tbody id="list">
+		</tbody>
+	</table>
+</body>
+</html>
+
+
+
+
+
+
+
