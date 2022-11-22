@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#btnSaveLocal").click(function(){
+			var data = $("#text1").val();
+			localStorage.setItem("text1",data);
+		});
+		$("#btnReadLocal").click(function(){
+			var data = localStorage.getItem("text1");
+			$("#span1").append(data);
+		});
+		
+		$("#btnSaveSession").click(function(){
+			var data = $("#text2").val();
+			sessionStorage.setItem("text2",data);
+		});
+		$("#btnReadSession").click(function(){
+			var data = sessionStorage.getItem("text2");
+			$("#span2").append(data);
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>Local Storage</h3>
+	<button id="btnSaveLocal">저장</button>
+	<input type="text" id="text1">
+	<br>
+	<button id="btnReadLocal">조회</button>
+	<span id="span1"></span>
+	<hr>
+	<h3>Session Storage</h3>
+	<button id="btnSaveSession">저장</button>
+	<input type="text" id="text2">
+	<br>
+	<button id="btnReadSession">조회</button>
+	<span id="span2"></span>
+</body>
+</html>

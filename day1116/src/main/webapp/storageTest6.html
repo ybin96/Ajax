@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		
+		var flag = false;
+		setInterval(function(){
+			var total = 0;
+			$.ajax({
+				url:"GetTotal",
+				success:function(data){
+					total = Number(data);
+					if(sessionStorage.getItem("member") !== null){
+						member = JSON.parse(sessionStorage.getItem("member"));		
+						if(member.length>total){
+							for(i=total;i<member.length;i++){
+								var row = member[i];										
+								$.ajax({
+									url:"InsertMember",
+									data:row,
+									success:function(){		
+									}
+								})	;
+							}
+						}
+					}	
+				}
+			});
+		},3000);
+		
+		$("#btnSaveSession").click(function(){
+			var member;
+			//console.log(member); // null
+			if(sessionStorage.getItem("member") == null){
+				member = [];
+			}else{
+				member = JSON.parse(sessionStorage.getItem("member"));
+			} 
+			
+			var data = $("#f").serializeArray();
+			member.push(data);
+			var str = JSON.stringify(member);
+			sessionStorage.setItem("member",str);
+			
+			$("input[type=text]").val("");
+			
+			$("#btnReadSession").trigger("click");
+			
+		});
+		
+		$("#btnReadSession").click(function(){
+			$("#output").empty();
+			var arr = JSON.parse(sessionStorage.getItem("member"));
+			for(i=0;i<arr.length;i++){
+				var tr = $("<tr></tr>");
+				for(j=0;j<arr[i].length;j++){
+					$(tr).append($("<td></td>").html(arr[i][j].value));	
+				}
+				$("#output").append(tr);
+			}
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>Session Storage</h3>
+	<form id="f">
+	이름 : <input type="text" id="name" name="name"><br>
+	나이 : <input type="text" id="age" name="age"><br>
+	주소 : <input type="text" id="addr" name="addr"><br>
+	</form>
+	<button id="btnSaveSession">저장</button>
+	<button id="btnReadSession">조회</button>
+	<hr>
+	<table id="output"></table>
+
+</body>
+</html>

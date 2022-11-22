@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#btnSaveSession").click(function(){
+			var name = $("#name").val();
+			var age = $("#age").val();
+			var addr = $("#addr").val();
+			var data = {
+				name:name,
+				age:age,
+				addr:addr
+			}
+			var str = JSON.stringify(data);
+			console.log(str);
+			sessionStorage.setItem("data",str);
+		});
+		
+		$("#btnReadSession").click(function(){
+			var data = sessionStorage.getItem("data");
+			var str = JSON.parse(data);
+			console.log(str);
+			$("#text").append("<br>이름:"+str.name+"<br>나이:"+str.age+"<br>주소:"+str.addr);
+			
+		});
+	});
+</script>
+</head>
+<body>
+	<h3>Session Storage</h3>
+	이름 : <input type="text" id="name"><br>
+	나이 : <input type="text" id="age"><br>
+	주소 : <input type="text" id="addr"><br>
+	
+	<button id="btnSaveSession">저장</button>
+	<button id="btnReadSession">조회</button>
+	<hr>
+	<span id="text"></span>
+
+</body>
+</html>

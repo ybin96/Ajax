@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#btnSaveSession").click(function(){
+			var data = {
+				no:1,
+				name:"축구공",
+				price:35000,
+				qty:10,
+				fname:"ball.jpg"
+			}
+			var str = JSON.stringify(data);
+			sessionStorage.setItem("data",str);
+		});
+		
+		$("#btnReadSession").click(function(){
+			var data = sessionStorage.getItem("data");
+			var obj = JSON.parse(data);
+			console.log(obj);
+			});
+		});
+
+</script>
+</head>
+<body>
+	<h3>Session Storage</h3>
+	<button id="btnSaveSession">저장</button>
+	<button id="btnReadSession">조회</button>
+
+</body>
+</html>

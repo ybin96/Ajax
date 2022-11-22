@@ -1,0 +1,11 @@
+CACHE MANIFEST
+
+CACHE:
+sist.js
+sist.css
+images/ball1.jpg
+
+NETWORK:
+*
+
+FALLBACK:
