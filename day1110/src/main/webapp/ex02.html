@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=cefc0082e9394dd9d2599e7e7240032c&libraries=services"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script type="text/javascript">
+$(function(){
+	var data = {};
+	$.ajax({
+		url:"code.txt",
+		success:function(str){
+			var arr = str.split("\n");
+			$.each(arr, function(){
+				var row = this.split(",");
+				var city = row[0];
+				var code = row[1];
+				//console.log(city,code);
+				if(city != undefined && code != undefined){
+					data[city] = code; 
+				}
+			});
+							
+		}
+	});
+	
+	
+	setTimeout(function(){
+		navigator.geolocation.getCurrentPosition( function(position){
+			 var lat= position.coords.latitude;
+             var lng= position.coords.longitude;	
+             console.log(lat, lng);
+             var coords =  new kakao.maps.LatLng(lat, lng);
+             // 주소-좌표 변환 객체를 생성합니다
+             var geocoder = new kakao.maps.services.Geocoder();
+             geocoder.coord2RegionCode(coords.getLng(), coords.getLat(), pro);  
+            // geocoder.coord2Address(coords.getLng(), coords.getLat(), pro);
+		});
+	},500);
+	
+	
+	
+	function pro(result, status) {
+		var regId;
+	    if (status === kakao.maps.services.Status.OK) {
+	        for(var i = 0; i < result.length; i++) {
+	            // 행정동의 region_type 값은 'H' 이므로
+	            if (result[i].region_type === 'H') {
+	                var addr = result[i].address_name;
+	                console.log(addr);
+	                $.each(data, function(key,value){
+						if(addr.match(key)){
+							regId = value;								
+						}
+					});
+	                break;
+	            }//  end if
+	        }// end for
+	        getWf(regId);//날씨 정보 읽어 오기
+	    } // end if   
+	}// end pro	
+	
+	
+	function getWf(regId){
+		var url = "https://apis.data.go.kr/1360000/VilageFcstMsgService/getLandFcst?serviceKey=dEAjcRng1q%2BZ8dnzPqxxWvPPado8097gcy9fpyiiGvXhxQVB6hAtzJjHN%2Fpk%2FzkFhI3EstFkhL9tHe08MzzIxg%3D%3D&numOfRows=10&pageNo=1&regId="+regId;
+		$.ajax({
+			url:url,
+			success:function(data){
+				var row = $(data).find("item")[1];
+				var ta = $(row).find("ta").text();
+				var wf = $(row).find("wf").text();
+				$("#ta").html(ta);
+				$("#wf").html(wf);
+			}
+		});
+	}
+	
+});
+</script>
+</head>
+<body>
+	예상기온 : <span id="ta"></span><br>
+	날씨 : <span id="wf"></span>
+</body>
+</html>
+
+
+
+
+
+
+
